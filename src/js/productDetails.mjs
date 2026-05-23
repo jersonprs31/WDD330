@@ -1,4 +1,4 @@
-import { setLocalStorage, getLocalStorage } from './utils.mjs';
+import { setLocalStorage, getLocalStorage, updateCartBadge } from './utils.mjs';
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
@@ -8,13 +8,9 @@ export default class ProductDetails {
   }
 
   async init() {
-    // 1. Fetch the data
     this.product = await this.dataSource.findProductById(this.productId);
-    
-    // 2. Render the HTML
     this.renderProductDetails('main');
     
-    // 3. Attach the event listener AFTER the button exists in the DOM
     document
       .getElementById('addToCart')
       .addEventListener('click', this.addToCart.bind(this));
@@ -27,6 +23,8 @@ export default class ProductDetails {
     }
     cart.push(this.product);
     setLocalStorage('so-cart', cart);
+    
+    updateCartBadge();
   }
 
   renderProductDetails(selector) {

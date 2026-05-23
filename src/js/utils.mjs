@@ -58,4 +58,21 @@ export async function loadHeaderFooter() {
   if (footerElement) {
     renderWithTemplate(footerTemplate, footerElement);
   }
+
+  updateCartBadge();
+}
+
+export function updateCartBadge() {
+  const cartItems = getLocalStorage("so-cart") || [];
+  const cartIcon = document.querySelector(".cart");
+  
+  if (cartIcon && cartItems.length > 0) {
+    let badge = document.querySelector(".cart-badge");
+    if (!badge) {
+      badge = document.createElement("span");
+      badge.classList.add("cart-badge");
+      cartIcon.appendChild(badge);
+    }
+    badge.textContent = cartItems.length;
+  }
 }
